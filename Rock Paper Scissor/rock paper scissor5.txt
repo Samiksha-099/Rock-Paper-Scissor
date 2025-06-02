@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Rock Paper Scissors - Purple Glow</title>
+  <style>
+    /* Fonts */
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+    /* Body and Background */
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #8e2de2, #c850c0);
+      color: #f0e9ff;
+      font-family: 'Poppins', sans-serif;
+      user-select: none;
+      padding: 20px;
+    }
+
+    /* Heading */
+    h1 {
+      font-weight: 700;
+      font-size: 3rem;
+      text-shadow: 0 0 10px #ea80fc;
+      margin-bottom: 20px;
+    }
+
+    /* Scoreboard */
+    .scoreboard {
+      background: rgba(255, 255, 255, 0.15);
+      padding: 18px 40px;
+      border-radius: 14px;
+      box-shadow: 0 0 25px #ea80fcaa;
+      font-size: 1.7rem;
+      font-weight: 700;
+      margin-bottom: 40px;
+      width: 320px;
+      text-align: center;
+      letter-spacing: 1.2px;
+      color: #f8f1ff;
+      user-select: none;
+    }
+    .scoreboard span {
+      color: #ffc1ff;
+    }
+
+    /* Buttons Container */
+    .choices {
+      display: flex;
+      justify-content: center;
+      gap: 35px;
+      margin-bottom: 50px;
+    }
+
+    /* Choice Buttons */
+    button.choice {
+      background: #c850c0cc;
+      border: none;
+      width: 130px;
+      height: 130px;
+      border-radius: 20px;
+      font-size: 4rem;
+      color: #fff;
+      cursor: pointer;
+      box-shadow: 0 0 20px #ea80fccc;
+      transition:
+        background-color 0.3s ease,
+        transform 0.2s ease,
+        box-shadow 0.3s ease;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      user-select: none;
+    }
+    button.choice:hover {
+      background-color: #f76efc;
+      box-shadow: 0 0 30px #ff96ffcc;
+      transform: scale(1.15);
+    }
+    button.choice:active {
+      transform: scale(1);
+      box-shadow: 0 0 15px #ff6affcc;
+    }
+
+    /* Result Box */
+    .result-box {
+      width: 350px;
+      min-height: 55px;
+      font-size: 2.4rem;
+      font-weight: 700;
+      margin-bottom: 25px;
+      padding: 18px 30px;
+      border-radius: 16px;
+      text-align: center;
+      box-shadow: 0 0 30px transparent;
+      transition: background-color 0.4s ease, color 0.4s ease;
+      user-select: none;
+      color: #f4e9ff;
+    }
+    .result-win {
+      background-color: #9b27ffcc;
+      color: #d6b3ff;
+      box-shadow: 0 0 35px #d19dffcc;
+    }
+    .result-lose {
+      background-color: #8f0c53cc;
+      color: #f7c6d1;
+      box-shadow: 0 0 35px #ff9ac9cc;
+    }
+    .result-draw {
+      background-color: #6f3e7fcc;
+      color: #ceabd8;
+      box-shadow: 0 0 30px #bb9bd9cc;
+    }
+
+    /* Choices picked display */
+    .choices-picked {
+      width: 350px;
+      padding: 14px 25px;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 14px;
+      font-size: 1.5rem;
+      color: #d8bfffcc;
+      text-align: center;
+      box-shadow: inset 0 0 12px #bb9bd9cc;
+      user-select: none;
+      letter-spacing: 1.2px;
+    }
+
+    /* Responsive */
+    @media (max-width: 400px) {
+      .scoreboard, .result-box, .choices-picked {
+        width: 90vw;
+      }
+      button.choice {
+        width: 90px;
+        height: 90px;
+        font-size: 3.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🧠 Rock Paper Scissors Showdown</h1>
+
+  <div class="scoreboard">
+    You: <span id="userScore">0</span> | Computer: <span id="compScore">0</span>
+  </div>
+
+  <div id="result" class="result-box result-draw">
+    Make your move!
+  </div>
+
+  <div class="choices">
+    <button class="choice" onclick="play('rock')" title="Rock">🪨</button>
+    <button class="choice" onclick="play('paper')" title="Paper">📄</button>
+    <button class="choice" onclick="play('scissors')" title="Scissors">✂️</button>
+  </div>
+
+  <div id="choicesPicked" class="choices-picked">
+    You chose: - | Computer chose: -
+  </div>
+
+<script>
+  let userScore = 0;
+  let compScore = 0;
+
+  function play(userChoice) {
+    const choices = ['rock', 'paper', 'scissors'];
+    const emojis = { rock: '🪨', paper: '📄', scissors: '✂️' };
+    const compChoice = choices[Math.floor(Math.random() * 3)];
+
+    document.getElementById('choicesPicked').innerText =
+      `You chose: ${emojis[userChoice]} | Computer chose: ${emojis[compChoice]}`;
+
+    const resultDiv = document.getElementById('result');
+    let resultText = '';
+    let resultClass = '';
+
+    if (userChoice === compChoice) {
+      resultText = "😐 It's a Draw!";
+      resultClass = 'result-draw';
+    } else if (
+      (userChoice === 'rock' && compChoice === 'scissors') ||
+      (userChoice === 'paper' && compChoice === 'rock') ||
+      (userChoice === 'scissors' && compChoice === 'paper')
+    ) {
+      userScore++;
+      resultText = "🎉 You Win!";
+      resultClass = 'result-win';
+    } else {
+      compScore++;
+      resultText = "💥 Computer Wins!";
+      resultClass = 'result-lose';
+    }
+
+    document.getElementById('userScore').innerText = userScore;
+    document.getElementById('compScore').innerText = compScore;
+
+    resultDiv.innerText = resultText;
+    resultDiv.className = 'result-box ' + resultClass;
+  }
+</script>
+
+</body>
+</html>
